@@ -1,0 +1,38 @@
+{
+  "name": "assignment-tracker",
+  "version": "1.0.0",
+  "description": "Desktop app to track assignments from educational platform emails",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "tsc -p tsconfig.node.json && concurrently -n vite,tsc,electron \"vite\" \"tsc -p tsconfig.node.json --watch\" \"sleep 2 && electron .\"",
+    "dev:vite": "vite",
+    "dev:electron": "tsc -p tsconfig.node.json && electron .",
+    "build": "tsc -p tsconfig.node.json && vite build",
+    "package": "npm run build && electron-builder",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^17.3.1",
+    "electron-rebuild": "^3.2.9",
+    "googleapis": "^144.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "zustand": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3"
+  }
+}

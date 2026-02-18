@@ -1,0 +1,20 @@
+appId: com.assignment-tracker.app
+productName: Assignment Tracker
+directories:
+  buildResources: build
+  output: release
+files:
+  - dist/**/*
+  - dist-electron/**/*
+mac:
+  target:
+    - dmg
+    - zip
+  category: public.app-category.education
+win:
+  target:
+    - nsis
+linux:
+  target:
+    - AppImage
+    - deb
