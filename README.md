@@ -1,6 +1,31 @@
 # Assignment Tracker
 
-A desktop app that scans your Gmail for assignment notifications from educational platforms (Canvas, Blackboard, Gradescope, WebAssign, Pearson, Brightspace, Google Classroom, and more), parses them into structured assignments, and tracks them in a to-do list and calendar. Supports multiple Google accounts.
+A desktop application that scans your Gmail for assignment notifications from educational platforms (Canvas, Blackboard, Gradescope, WebAssign, Pearson, Brightspace, Google Classroom, and more), parses them into structured assignments, and helps students track their coursework and deadlines across multiple classes, platforms, and Google accounts.
+
+## Features
+
+- **Sign-in with Google**: Sign in with Google to allow Assignment Tracker to accurately scan and log assignments
+- **To-Do View**: See all active assignments with time remaining and overdue indicators
+- **Calendar View**: Visualize assignment due dates on a monthly calendar, color coded by course
+- **Assignment Management**: Manually add, complete, and edit assignments from multiple courses
+- **Status Tracking**: Monitor active and completed assignments with clear visual indicators
+
+<img width="1197" height="1008" alt="image" src="https://github.com/user-attachments/assets/b4b68b5f-7474-4a86-9e99-8d10e98242c8" />
+
+<img width="1202" height="1008" alt="image" src="https://github.com/user-attachments/assets/89cc77d8-b060-4998-8818-2ca4d0d9498e" />
+
+### To-Do Dashboard
+View all active assignments with:
+- Time remaining counters
+- Overdue alerts
+- Course and platform tags
+- Quick completion checkboxes
+
+### Calendar View
+Monthly calendar showing:
+- Assignment due dates marked with colored dots
+- Multiple assignments per day support
+- Easy navigation between months
 
 ## Architecture
 
@@ -35,10 +60,14 @@ Data flow: Renderer → IPC → Main process service → Gmail/Tasks API or SQLi
 ## Installation
 
 ```bash
-# 1. Install dependencies
+# Clone the repository
+git clone https://github.com/meera-singh-5/assignment-tracker.git
+cd assignment-tracker
+
+# Install dependencies
 npm install
 
-# 2. Configure environment variables
+# Configure environment variables
 cp .env.example .env
 ```
 
@@ -76,3 +105,25 @@ npm run package
 ```
 
 On first launch, use the in-app login flow to authorize a Google account — this opens a browser window for OAuth consent, then the app scans your Gmail for assignment emails and stores parsed results in a local SQLite database.
+
+## Configuration
+
+Update settings to customize:
+- Connected learning platforms
+- Notification preferences
+- Display options
+
+## Future Enhancements
+
+- [ ] Push notifications for upcoming deadlines
+- [ ] Mobile app version
+- [ ] Export to calendar applications
+- [ ] Import from calendar options
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Contact
+
+email: ms16082@nyu.edu
