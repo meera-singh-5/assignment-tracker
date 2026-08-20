@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function AssignmentDetailPanel({ assignment, onClose }: Props) {
-  const { updateAssignment } = useAssignmentStore();
+  const { updateAssignment, deleteAssignment } = useAssignmentStore();
 
   const [title, setTitle] = useState(assignment.title);
   const [course, setCourse] = useState(assignment.course);
@@ -70,6 +70,12 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
     updateAssignment(assignment.id, {
       status: isCompleted ? 'pending' : 'completed',
     });
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(`Delete "${assignment.title}" forever? This cannot be undone.`)) return;
+    await deleteAssignment(assignment.id);
+    onClose();
   };
 
   return (
@@ -172,6 +178,14 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
             className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary resize-none"
           />
         </div>
+
+        {/* Delete */}
+        <button
+          onClick={handleDelete}
+          className="w-full px-3 py-2 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
+        >
+          Delete assignment forever
+        </button>
 
         {/* Link */}
         {assignment.link && (

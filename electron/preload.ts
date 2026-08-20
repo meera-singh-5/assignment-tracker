@@ -22,6 +22,8 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.invoke('db:upsertAssignment', assignment),
     updateAssignment: (id: string, updates: Record<string, unknown>) =>
       ipcRenderer.invoke('db:updateAssignment', id, updates),
+    deleteAssignment: (id: string) =>
+      ipcRenderer.invoke('db:deleteAssignment', id),
   },
   settings: {
     get: () => ipcRenderer.invoke('settings:get'),

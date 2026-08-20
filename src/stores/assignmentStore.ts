@@ -12,6 +12,7 @@ interface AssignmentState {
   scanTasks: () => Promise<void>;
   updateAssignment: (id: string, updates: Partial<Assignment>) => Promise<void>;
   createAssignment: (data: Partial<Assignment>) => Promise<void>;
+  deleteAssignment: (id: string) => Promise<void>;
 }
 
 export const useAssignmentStore = create<AssignmentState>((set, get) => ({
@@ -86,6 +87,15 @@ export const useAssignmentStore = create<AssignmentState>((set, get) => ({
       set({ assignments: [...get().assignments, created] });
     } catch (err) {
       console.error('Failed to create assignment:', err);
+    }
+  },
+
+  deleteAssignment: async (id: string) => {
+    try {
+      await window.api.db.deleteAssignment(id);
+      set({ assignments: get().assignments.filter(a => a.id !== id) });
+    } catch (err) {
+      console.error('Failed to delete assignment:', err);
     }
   },
 }));

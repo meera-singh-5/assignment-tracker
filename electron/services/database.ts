@@ -192,6 +192,10 @@ export function updateAssignment(id: string, updates: Record<string, unknown>): 
   return upsertAssignment({ ...updates, id });
 }
 
+export function deleteAssignment(id: string): void {
+  db.prepare('DELETE FROM assignments WHERE id = ?').run(id);
+}
+
 // Duplicate detection
 export function findDuplicate(course: string, title: string, dueDate: string | null): Record<string, unknown> | undefined {
   return db.prepare(

@@ -88,6 +88,7 @@ export interface IpcApi {
     getAssignments: () => Promise<Assignment[]>;
     upsertAssignment: (assignment: Partial<Assignment>) => Promise<Assignment>;
     updateAssignment: (id: string, updates: Partial<Assignment>) => Promise<Assignment>;
+    deleteAssignment: (id: string) => Promise<void>;
   };
   settings: {
     get: () => Promise<Record<string, string>>;

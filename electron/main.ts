@@ -3,7 +3,7 @@ import path from 'path';
 loadEnv({ path: path.join(__dirname, '..', '.env') });
 
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { initDatabase, getAssignments, upsertAssignment, updateAssignment, getAllSettings, setSetting } from './services/database';
+import { initDatabase, getAssignments, upsertAssignment, updateAssignment, deleteAssignment, getAllSettings, setSetting } from './services/database';
 import { login, logout, getAuthStatus, migrateFromSingleAccount, toggleAccount } from './services/auth';
 import { scanEmails, refreshEmails, startAutoRefresh, stopAutoRefresh } from './services/gmail';
 import { scanTasks, refreshTasks } from './services/tasks';
@@ -103,6 +103,10 @@ function registerIpcHandlers(): void {
 
   ipcMain.handle('db:updateAssignment', async (_event, id: string, updates: Record<string, unknown>) => {
     return updateAssignment(id, updates);
+  });
+
+  ipcMain.handle('db:deleteAssignment', async (_event, id: string) => {
+    return deleteAssignment(id);
   });
 
   // Settings
