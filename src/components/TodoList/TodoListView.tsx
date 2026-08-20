@@ -9,14 +9,16 @@ export function TodoListView() {
   const { assignments, loading, scanning, fetchAssignments } = useAssignmentStore();
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [tab, setTab] = useState<'todo' | 'deleted'>('todo');
 
   useEffect(() => {
     fetchAssignments();
   }, [fetchAssignments]);
 
-  const activeAssignments = assignments.filter(a => !a.needs_review && a.status !== 'completed');
-  const completedAssignments = assignments.filter(a => !a.needs_review && a.status === 'completed');
-  const needsReview = assignments.filter(a => a.needs_review);
+  const activeAssignments = assignments.filter(a => !a.deleted && !a.needs_review && a.status !== 'completed');
+  const completedAssignments = assignments.filter(a => !a.deleted && !a.needs_review && a.status === 'completed');
+  const needsReview = assignments.filter(a => !a.deleted && a.needs_review);
+  const deletedAssignments = assignments.filter(a => a.deleted);
   const selectedAssignment = selectedId ? assignments.find(a => a.id === selectedId) : null;
 
   if (loading) {
@@ -51,61 +53,95 @@ export function TodoListView() {
             </div>
           )}
 
-          {/* Add assignment */}
-          <div className="mb-4">
-            {showAddForm ? (
-              <AddAssignmentForm onClose={() => setShowAddForm(false)} />
-            ) : (
-              <button
-                onClick={() => setShowAddForm(true)}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors w-full"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                Add assignment
-              </button>
-            )}
+          {/* Sub-tabs */}
+          <div className="flex items-center gap-1 mb-4 border-b border-gray-200">
+            <TabButton label="To-Do" active={tab === 'todo'} onClick={() => setTab('todo')} />
+            <TabButton
+              label={`Recently Deleted${deletedAssignments.length > 0 ? ` (${deletedAssignments.length})` : ''}`}
+              active={tab === 'deleted'}
+              onClick={() => setTab('deleted')}
+            />
           </div>
 
-          {/* Active assignments */}
-          {activeAssignments.length > 0 && (
+          {tab === 'todo' ? (
+            <>
+              {/* Add assignment */}
+              <div className="mb-4">
+                {showAddForm ? (
+                  <AddAssignmentForm onClose={() => setShowAddForm(false)} />
+                ) : (
+                  <button
+                    onClick={() => setShowAddForm(true)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors w-full"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add assignment
+                  </button>
+                )}
+              </div>
+
+              {/* Active assignments */}
+              {activeAssignments.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                    Active ({activeAssignments.length})
+                  </h3>
+                  <div className="space-y-2">
+                    {activeAssignments.map((a) => (
+                      <AssignmentCard
+                        key={a.id}
+                        assignment={a}
+                        selected={a.id === selectedId}
+                        onSelect={() => setSelectedId(a.id === selectedId ? null : a.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Needs review */}
+              <NeedsReviewSection assignments={needsReview} />
+
+              {/* Completed */}
+              {completedAssignments.length > 0 && (
+                <div className="mt-8">
+                  <h3 className="text-sm font-semibold text-gray-400 mb-3">
+                    Completed ({completedAssignments.length})
+                  </h3>
+                  <div className="space-y-2">
+                    {completedAssignments.map((a) => (
+                      <AssignmentCard
+                        key={a.id}
+                        assignment={a}
+                        selected={a.id === selectedId}
+                        onSelect={() => setSelectedId(a.id === selectedId ? null : a.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            /* Recently deleted */
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                Active ({activeAssignments.length})
-              </h3>
-              <div className="space-y-2">
-                {activeAssignments.map((a) => (
-                  <AssignmentCard
-                    key={a.id}
-                    assignment={a}
-                    selected={a.id === selectedId}
-                    onSelect={() => setSelectedId(a.id === selectedId ? null : a.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Needs review */}
-          <NeedsReviewSection assignments={needsReview} />
-
-          {/* Completed */}
-          {completedAssignments.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-sm font-semibold text-gray-400 mb-3">
-                Completed ({completedAssignments.length})
-              </h3>
-              <div className="space-y-2">
-                {completedAssignments.map((a) => (
-                  <AssignmentCard
-                    key={a.id}
-                    assignment={a}
-                    selected={a.id === selectedId}
-                    onSelect={() => setSelectedId(a.id === selectedId ? null : a.id)}
-                  />
-                ))}
-              </div>
+              {deletedAssignments.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-40 text-center">
+                  <p className="text-sm text-gray-400">No recently deleted assignments.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {deletedAssignments.map((a) => (
+                    <AssignmentCard
+                      key={a.id}
+                      assignment={a}
+                      selected={a.id === selectedId}
+                      onSelect={() => setSelectedId(a.id === selectedId ? null : a.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -119,5 +155,20 @@ export function TodoListView() {
         />
       )}
     </div>
+  );
+}
+
+function TabButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+        active
+          ? 'border-primary text-primary'
+          : 'border-transparent text-gray-500 hover:text-gray-700'
+      }`}
+    >
+      {label}
+    </button>
   );
 }

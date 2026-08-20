@@ -14,6 +14,7 @@ export interface Assignment {
   email_id: string;
   manually_created: boolean;
   needs_review: boolean;
+  deleted: boolean;
   account_email: string;
   created_at: string;
   updated_at: string;

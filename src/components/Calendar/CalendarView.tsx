@@ -59,7 +59,7 @@ export function CalendarView() {
   const assignmentsByDate = useMemo(() => {
     const map: Record<string, Assignment[]> = {};
     for (const a of assignments) {
-      if (!a.due_date) continue;
+      if (!a.due_date || a.deleted) continue;
       const d = new Date(a.due_date);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       if (!map[key]) map[key] = [];

@@ -80,6 +80,11 @@ export function initDatabase(): void {
   if (!cacheCols.some(c => c.name === 'account_email')) {
     db.exec("ALTER TABLE email_cache ADD COLUMN account_email TEXT NOT NULL DEFAULT ''");
   }
+
+  // Migration: add deleted flag to assignments if missing
+  if (!assignmentCols.some(c => c.name === 'deleted')) {
+    db.exec("ALTER TABLE assignments ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0");
+  }
 }
 
 function generateId(): string {
@@ -138,6 +143,7 @@ export function getAssignments(): Record<string, unknown>[] {
     reminder_dot: Boolean(row.reminder_dot),
     manually_created: Boolean(row.manually_created),
     needs_review: Boolean(row.needs_review),
+    deleted: Boolean(row.deleted),
   }));
 }
 
@@ -153,7 +159,9 @@ export function upsertAssignment(data: Record<string, unknown>): Record<string, 
     for (const [key, value] of Object.entries(data)) {
       if (key === 'id' || key === 'created_at') continue;
       fields.push(`${key} = ?`);
-      values.push(key === 'subtasks' ? JSON.stringify(value) : value);
+      values.push(
+        key === 'subtasks' ? JSON.stringify(value) : typeof value === 'boolean' ? (value ? 1 : 0) : value
+      );
     }
     fields.push('updated_at = ?');
     values.push(now);

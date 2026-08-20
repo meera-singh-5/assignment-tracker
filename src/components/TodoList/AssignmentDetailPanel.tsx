@@ -73,7 +73,16 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm(`Delete "${assignment.title}" forever? This cannot be undone.`)) return;
+    await updateAssignment(assignment.id, { deleted: true });
+    onClose();
+  };
+
+  const handleRestore = async () => {
+    await updateAssignment(assignment.id, { deleted: false });
+  };
+
+  const handleDeleteForever = async () => {
+    if (!window.confirm(`Permanently delete "${assignment.title}"? This cannot be undone.`)) return;
     await deleteAssignment(assignment.id);
     onClose();
   };
@@ -179,13 +188,30 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
           />
         </div>
 
-        {/* Delete */}
-        <button
-          onClick={handleDelete}
-          className="w-full px-3 py-2 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
-        >
-          Delete assignment forever
-        </button>
+        {/* Delete / Restore */}
+        {assignment.deleted ? (
+          <div className="flex gap-2">
+            <button
+              onClick={handleRestore}
+              className="flex-1 px-3 py-2 text-xs font-medium text-primary border border-primary/30 rounded-md hover:bg-primary/5 transition-colors"
+            >
+              Restore assignment
+            </button>
+            <button
+              onClick={handleDeleteForever}
+              className="flex-1 px-3 py-2 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
+            >
+              Delete assignment forever
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleDelete}
+            className="w-full px-3 py-2 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
+          >
+            Delete assignment from calendar
+          </button>
+        )}
 
         {/* Link */}
         {assignment.link && (
