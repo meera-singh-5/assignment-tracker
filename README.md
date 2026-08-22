@@ -57,6 +57,14 @@ Data flow: Renderer → IPC → Main process service → Gmail/Tasks API or SQLi
 4. Add `http://127.0.0.1:8234/oauth/callback` as an authorized redirect URI.
 5. Note the generated Client ID and Client Secret.
 
+### Allowing non-NYU accounts to sign in
+
+Under **APIs & Services → OAuth consent screen**, the **User Type** setting controls who can sign in:
+
+- **Internal** — restricted to accounts within your Google Workspace organization (e.g. `@nyu.edu`). This is the default and is why non-NYU accounts get an "org_internal" error.
+- **External + Testing** (recommended for small groups) — switch User Type to External, leave publishing status as Testing, and add each non-NYU Google account under **Test users** (up to 100). Those accounts can sign in immediately with no review process.
+- **External + Published to Production** — allows any Google account to sign in without being pre-listed. Because this app requests the `gmail.readonly` scope, which Google classifies as "restricted," publishing to production generally requires Google's OAuth verification process (privacy policy URL, possibly a demo video, and a CASA security assessment), which can take days to weeks.
+
 ## Installation
 
 ```bash
