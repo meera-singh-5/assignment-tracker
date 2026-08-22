@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#4F46E5',
-        'primary-hover': '#4338CA',
+        primary: '#1712C6',
+        'primary-hover': '#1712C6',
         surface: '#c9c9c9',
         'surface-dark': '#B4B4B4',
       },

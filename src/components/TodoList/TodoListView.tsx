@@ -29,18 +29,6 @@ export function TodoListView() {
     );
   }
 
-  if (assignments.length === 0 && !scanning) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 text-center">
-        <div className="text-4xl mb-4">📋</div>
-        <h3 className="text-lg font-semibold text-black mb-1">No assignments yet</h3>
-        <p className="text-sm text-black">
-          Click Refresh to scan your emails for assignments.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex gap-0 h-full -m-6">
       {/* Assignment list */}

@@ -84,6 +84,10 @@ export function CalendarView() {
   const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
   const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
   const goToToday = () => {
+    if (selectedDate === todayStr) {
+      setSelectedDate(null);
+      return;
+    }
     setCurrentDate(new Date());
     setSelectedDate(todayStr);
   };

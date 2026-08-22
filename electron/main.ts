@@ -4,7 +4,7 @@ loadEnv({ path: path.join(__dirname, '..', '.env') });
 
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { initDatabase, getAssignments, upsertAssignment, updateAssignment, deleteAssignment, getAllSettings, setSetting } from './services/database';
-import { login, logout, getAuthStatus, migrateFromSingleAccount, toggleAccount } from './services/auth';
+import { login, logout, getAuthStatus, migrateFromSingleAccount, toggleAccount, cancelLogin } from './services/auth';
 import { scanEmails, refreshEmails, startAutoRefresh, stopAutoRefresh } from './services/gmail';
 import { scanTasks, refreshTasks } from './services/tasks';
 
@@ -70,6 +70,10 @@ function registerIpcHandlers(): void {
 
   ipcMain.handle('auth:toggleAccount', async (_event, email: string, enabled: boolean) => {
     toggleAccount(email, enabled);
+  });
+
+  ipcMain.handle('auth:cancelLogin', async () => {
+    cancelLogin();
   });
 
   // Gmail

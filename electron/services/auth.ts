@@ -219,8 +219,20 @@ async function getUserEmail(auth: ReturnType<typeof getOAuth2Client>): Promise<s
   return data.email || '';
 }
 
-// Track active OAuth server so we can close it if a new login starts
+// Track active OAuth server so we can close it if a new login starts or the user cancels
 let activeOAuthServer: http.Server | null = null;
+let activeOAuthReject: ((err: Error) => void) | null = null;
+
+export function cancelLogin(): void {
+  if (activeOAuthServer) {
+    activeOAuthServer.close();
+    activeOAuthServer = null;
+  }
+  if (activeOAuthReject) {
+    activeOAuthReject(new Error('Sign-in cancelled'));
+    activeOAuthReject = null;
+  }
+}
 
 function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
   // Close any lingering server from a previous attempt
@@ -230,6 +242,8 @@ function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
   }
 
   return new Promise((resolve, reject) => {
+    activeOAuthReject = reject;
+
     const parsedRedirect = new URL(OAUTH_CONFIG.redirectUri);
     const port = parseInt(parsedRedirect.port, 10);
 
@@ -243,6 +257,7 @@ function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
         res.end('<html><body><h1>Authentication failed</h1><p>You can close this window.</p></body></html>');
         server.close();
         activeOAuthServer = null;
+        activeOAuthReject = null;
         reject(new Error(`OAuth error: ${error}`));
         return;
       }
@@ -252,6 +267,7 @@ function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
         res.end('<html><body><h1>Authentication successful!</h1><p>You can close this window and return to Assignment Tracker.</p></body></html>');
         server.close();
         activeOAuthServer = null;
+        activeOAuthReject = null;
         resolve(code);
       }
     });
@@ -264,6 +280,7 @@ function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
 
     server.on('error', (err) => {
       activeOAuthServer = null;
+      activeOAuthReject = null;
       reject(err);
     });
 
@@ -271,6 +288,7 @@ function openBrowserAndWaitForCode(authUrl: string): Promise<string> {
     setTimeout(() => {
       server.close();
       activeOAuthServer = null;
+      activeOAuthReject = null;
       reject(new Error('OAuth timeout'));
     }, 120_000);
   });

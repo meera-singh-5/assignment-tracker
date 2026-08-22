@@ -76,6 +76,7 @@ export interface IpcApi {
     logout: (email: string) => Promise<void>;
     getStatus: () => Promise<AuthStatus>;
     toggleAccount: (email: string, enabled: boolean) => Promise<void>;
+    cancelLogin: () => Promise<void>;
   };
   gmail: {
     scan: (startDate?: string) => Promise<Assignment[]>;

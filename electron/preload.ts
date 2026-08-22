@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('api', {
     getStatus: () => ipcRenderer.invoke('auth:getStatus'),
     toggleAccount: (email: string, enabled: boolean) =>
       ipcRenderer.invoke('auth:toggleAccount', email, enabled),
+    cancelLogin: () => ipcRenderer.invoke('auth:cancelLogin'),
   },
   gmail: {
     scan: (startDate?: string) => ipcRenderer.invoke('gmail:scan', startDate),
