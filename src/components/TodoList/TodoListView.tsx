@@ -33,8 +33,8 @@ export function TodoListView() {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-center">
         <div className="text-4xl mb-4">📋</div>
-        <h3 className="text-lg font-semibold text-gray-700 mb-1">No assignments yet</h3>
-        <p className="text-sm text-gray-400">
+        <h3 className="text-lg font-semibold text-black mb-1">No assignments yet</h3>
+        <p className="text-sm text-black">
           Click Refresh to scan your emails for assignments.
         </p>
       </div>
@@ -54,7 +54,7 @@ export function TodoListView() {
           )}
 
           {/* Sub-tabs */}
-          <div className="flex items-center gap-1 mb-4 border-b border-gray-200">
+          <div className="flex items-center gap-1 mb-4 border-b border-black">
             <TabButton label="To-Do" active={tab === 'todo'} onClick={() => setTab('todo')} />
             <TabButton
               label={`Recently Deleted${deletedAssignments.length > 0 ? ` (${deletedAssignments.length})` : ''}`}
@@ -72,7 +72,7 @@ export function TodoListView() {
                 ) : (
                   <button
                     onClick={() => setShowAddForm(true)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors w-full"
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-black hover:text-primary hover:bg-primary/5 rounded-lg transition-colors w-full"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -85,7 +85,7 @@ export function TodoListView() {
               {/* Active assignments */}
               {activeAssignments.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                  <h3 className="text-sm font-semibold text-black mb-3">
                     Active ({activeAssignments.length})
                   </h3>
                   <div className="space-y-2">
@@ -107,7 +107,7 @@ export function TodoListView() {
               {/* Completed */}
               {completedAssignments.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="text-sm font-semibold text-gray-400 mb-3">
+                  <h3 className="text-sm font-semibold text-black mb-3">
                     Completed ({completedAssignments.length})
                   </h3>
                   <div className="space-y-2">
@@ -128,7 +128,7 @@ export function TodoListView() {
             <div>
               {deletedAssignments.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-40 text-center">
-                  <p className="text-sm text-gray-400">No recently deleted assignments.</p>
+                  <p className="text-sm text-black">No recently deleted assignments.</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -165,7 +165,7 @@ function TabButton({ label, active, onClick }: { label: string; active: boolean;
       className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
         active
           ? 'border-primary text-primary'
-          : 'border-transparent text-gray-500 hover:text-gray-700'
+          : 'border-transparent text-black hover:text-black'
       }`}
     >
       {label}

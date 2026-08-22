@@ -46,7 +46,7 @@ export function AddAssignmentForm({ onClose }: { onClose: () => void }) {
         value={title}
         onChange={e => setTitle(e.target.value)}
         autoFocus
-        className="w-full text-sm font-medium text-gray-900 placeholder-gray-400 border-0 border-b border-gray-200 pb-2 mb-3 focus:outline-none focus:border-primary"
+        className="w-full text-sm font-medium text-black placeholder-gray-400 border-0 border-b border-black pb-2 mb-3 focus:outline-none focus:border-primary"
       />
 
       <div className="grid grid-cols-2 gap-3 mb-3">
@@ -56,14 +56,14 @@ export function AddAssignmentForm({ onClose }: { onClose: () => void }) {
           placeholder="Course name"
           value={course}
           onChange={e => setCourse(e.target.value)}
-          className="text-xs text-gray-700 placeholder-gray-400 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+          className="text-xs text-black placeholder-gray-400 border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
         />
 
         {/* Platform */}
         <select
           value={platform}
           onChange={e => setPlatform(e.target.value)}
-          className="text-xs text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary bg-white"
+          className="text-xs text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary bg-white"
         >
           {PLATFORMS.map(p => (
             <option key={p} value={p}>{p}</option>
@@ -77,7 +77,7 @@ export function AddAssignmentForm({ onClose }: { onClose: () => void }) {
           type="date"
           value={dueDate}
           onChange={e => setDueDate(e.target.value)}
-          className="text-xs text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+          className="text-xs text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
         />
 
         {/* Due time */}
@@ -85,7 +85,7 @@ export function AddAssignmentForm({ onClose }: { onClose: () => void }) {
           type="time"
           value={dueTime}
           onChange={e => setDueTime(e.target.value)}
-          className="text-xs text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+          className="text-xs text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
         />
       </div>
 
@@ -93,7 +93,7 @@ export function AddAssignmentForm({ onClose }: { onClose: () => void }) {
         <button
           type="button"
           onClick={onClose}
-          className="px-3 py-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+          className="px-3 py-1.5 text-xs text-black hover:text-black transition-colors"
         >
           Cancel
         </button>

@@ -16,7 +16,7 @@ const platformColors: Record<string, string> = {
   WebAssign: 'bg-blue-100 text-blue-700',
   Pearson: 'bg-indigo-100 text-indigo-700',
   'Google Classroom': 'bg-green-100 text-green-700',
-  Unknown: 'bg-gray-100 text-gray-600',
+  Unknown: 'bg-gray-100 text-black',
 };
 
 export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCardProps) {
@@ -86,7 +86,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
       onClick={onSelect}
       className={`bg-white rounded-lg border p-4 transition-all hover:shadow-md cursor-pointer ${
         selected ? 'ring-2 ring-primary border-primary/30' :
-        isCompleted ? 'opacity-60 border-gray-200' : overdue ? 'border-red-300' : isWithin24h ? 'border-amber-300' : 'border-gray-200'
+        isCompleted ? 'opacity-60 border-black' : overdue ? 'border-red-300' : isWithin24h ? 'border-amber-300' : 'border-black'
       }`}
     >
       <div className="flex items-start gap-3">
@@ -95,7 +95,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
           className={`mt-1 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
             isCompleted
               ? 'bg-green-500 border-green-500 text-white'
-              : 'border-gray-300 hover:border-primary'
+              : 'border-black hover:border-primary'
           }`}
         >
           {isCompleted && (
@@ -109,7 +109,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               {assignment.course && (
-                <span className="text-xs font-medium text-gray-500">{assignment.course}</span>
+                <span className="text-xs font-medium text-black">{assignment.course}</span>
               )}
               <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${colorClass}`}>
                 {assignment.platform}
@@ -123,12 +123,12 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
 
             <div className="text-right shrink-0 ml-3">
               <div className={`text-xs font-medium ${
-                isWithin24h ? 'text-amber-600' : overdue ? 'text-red-500' : 'text-gray-500'
+                isWithin24h ? 'text-amber-600' : overdue ? 'text-red-500' : 'text-black'
               }`}>
                 {due.date}
               </div>
               {due.time && (
-                <div className={`text-xs ${overdue ? 'text-red-400' : 'text-gray-400'}`}>
+                <div className={`text-xs ${overdue ? 'text-red-400' : 'text-black'}`}>
                   {due.time}
                 </div>
               )}
@@ -142,7 +142,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
             </div>
           </div>
 
-          <h3 className={`font-medium text-sm ${isCompleted ? 'line-through text-gray-400' : 'text-gray-900'}`}>
+          <h3 className={`font-medium text-sm ${isCompleted ? 'line-through text-black' : 'text-black'}`}>
             {assignment.title}
           </h3>
         </div>
@@ -153,7 +153,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="text-gray-400 hover:text-primary shrink-0 mt-1"
+            className="text-black hover:text-primary shrink-0 mt-1"
             title="Open in browser"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -25,14 +25,14 @@ export function LoginScreen() {
     <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-50 to-white">
       <div className="bg-white rounded-2xl shadow-lg p-10 max-w-md w-full mx-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Assignment Tracker</h1>
-          <p className="text-gray-500">
+          <h1 className="text-3xl font-bold text-black mb-2">Assignment Tracker</h1>
+          <p className="text-black">
             Connect your Gmail to automatically find and track assignments from your courses.
           </p>
         </div>
 
         <div className="mb-6">
-          <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="start-date" className="block text-sm font-medium text-black mb-1">
             Scan emails from
           </label>
           <input
@@ -40,9 +40,9 @@ export function LoginScreen() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-3 py-2 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-black mt-1">
             We'll look for assignment emails starting from this date.
           </p>
         </div>

@@ -17,11 +17,11 @@ const platformTextColors: Record<string, string> = {
   Gradescope: 'text-teal-700',
   Brightspace: 'text-orange-700',
   Canvas: 'text-red-700',
-  Blackboard: 'text-gray-800',
+  Blackboard: 'text-black',
   WebAssign: 'text-blue-700',
   Pearson: 'text-indigo-700',
   'Google Classroom': 'text-green-700',
-  Unknown: 'text-gray-600',
+  Unknown: 'text-black',
 };
 
 const platformBgColors: Record<string, string> = {
@@ -96,7 +96,7 @@ export function CalendarView() {
     <div className="flex flex-col h-full gap-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-800">{monthLabel}</h2>
+        <h2 className="text-lg font-semibold text-black">{monthLabel}</h2>
         <div className="flex items-center gap-2">
           <button
             onClick={goToToday}
@@ -108,7 +108,7 @@ export function CalendarView() {
             onClick={prevMonth}
             className="p-1.5 rounded-md hover:bg-gray-100 transition-colors"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -116,7 +116,7 @@ export function CalendarView() {
             onClick={nextMonth}
             className="p-1.5 rounded-md hover:bg-gray-100 transition-colors"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -129,14 +129,14 @@ export function CalendarView() {
           {/* Day headers */}
           <div className="grid grid-cols-7 mb-1">
             {DAYS.map(day => (
-              <div key={day} className="text-center text-xs font-medium text-gray-400 py-2">
+              <div key={day} className="text-center text-xs font-medium text-black py-2">
                 {day}
               </div>
             ))}
           </div>
 
           {/* Date cells */}
-          <div className="grid grid-cols-7 flex-1 auto-rows-fr gap-px bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+          <div className="grid grid-cols-7 flex-1 auto-rows-fr gap-px bg-gray-100 rounded-lg overflow-hidden border border-black">
             {cells.map((cell, i) => {
               if (cell.day === null) {
                 return <div key={`empty-${i}`} className="bg-gray-50/50" />;
@@ -161,7 +161,7 @@ export function CalendarView() {
                       ? 'bg-primary text-white'
                       : isSelected
                         ? 'text-primary'
-                        : 'text-gray-700'
+                        : 'text-black'
                   }`}>
                     {cell.day}
                   </span>
@@ -183,7 +183,7 @@ export function CalendarView() {
                         />
                       ))}
                       {dayAssignments.length > 3 && (
-                        <span className="text-[9px] text-gray-400 leading-none">+{dayAssignments.length - 3}</span>
+                        <span className="text-[9px] text-black leading-none">+{dayAssignments.length - 3}</span>
                       )}
                     </div>
                   )}
@@ -195,16 +195,16 @@ export function CalendarView() {
 
         {/* Detail panel */}
         {selectedDate && (
-          <div className="w-72 shrink-0 bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col">
-            <div className="px-4 py-3 border-b border-gray-100">
-              <h3 className="text-sm font-semibold text-gray-800">
+          <div className="w-72 shrink-0 bg-white border border-black rounded-lg overflow-hidden flex flex-col">
+            <div className="px-4 py-3 border-b border-black">
+              <h3 className="text-sm font-semibold text-black">
                 {new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
                   weekday: 'long',
                   month: 'long',
                   day: 'numeric',
                 })}
               </h3>
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="text-xs text-black mt-0.5">
                 {selectedAssignments.length
                   ? `${selectedAssignments.length} assignment${selectedAssignments.length > 1 ? 's' : ''}`
                   : 'No assignments due'}
@@ -213,7 +213,7 @@ export function CalendarView() {
 
             <div className="flex-1 overflow-y-auto p-2">
               {selectedAssignments.length === 0 ? (
-                <div className="flex items-center justify-center h-24 text-xs text-gray-400">
+                <div className="flex items-center justify-center h-24 text-xs text-black">
                   Nothing due this day
                 </div>
               ) : (
@@ -256,7 +256,7 @@ function AssignmentPill({ assignment }: { assignment: Assignment }) {
           className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
             isCompleted
               ? 'bg-green-500 border-green-500 text-white'
-              : 'border-gray-300 hover:border-primary'
+              : 'border-black hover:border-primary'
           }`}
         >
           {isCompleted && (
@@ -267,16 +267,16 @@ function AssignmentPill({ assignment }: { assignment: Assignment }) {
         </button>
 
         <div className="flex-1 min-w-0">
-          <div className={`text-xs font-semibold ${isCompleted ? 'line-through text-gray-400' : textColor}`}>
+          <div className={`text-xs font-semibold ${isCompleted ? 'line-through text-black' : textColor}`}>
             {assignment.title}
           </div>
           <div className="flex items-center gap-2 mt-1">
             {assignment.course && (
-              <span className="text-[10px] text-gray-500 truncate">{assignment.course}</span>
+              <span className="text-[10px] text-black truncate">{assignment.course}</span>
             )}
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <span className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-gray-400'}`}>
+            <span className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-black'}`}>
               {time}
               {isOverdue && ' (Overdue)'}
             </span>

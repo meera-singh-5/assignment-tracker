@@ -10,9 +10,9 @@ export function Header() {
   };
 
   return (
-    <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-end px-6 shrink-0">
+    <header className="h-20 border-b border-black flex items-center justify-end px-6 shrink-0">
       <div className="flex items-center gap-4">
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-black">
           {scanning ? 'Scanning...' : `Last scan: ${formatLastScan()}`}
         </span>
         <button

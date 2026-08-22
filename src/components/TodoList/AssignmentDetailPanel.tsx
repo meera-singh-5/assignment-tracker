@@ -88,15 +88,15 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
   };
 
   return (
-    <div className="w-80 shrink-0 bg-white border-l border-gray-200 flex flex-col h-full">
+    <div className="w-80 shrink-0 bg-white border-l border-black flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-        <h3 className="text-sm font-semibold text-gray-800">Assignment Details</h3>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-black">
+        <h3 className="text-sm font-semibold text-black">Assignment Details</h3>
         <button
           onClick={onClose}
           className="p-1 rounded hover:bg-gray-100 transition-colors"
         >
-          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
@@ -111,7 +111,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
             className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
               isCompleted
                 ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
             }`}
           >
             {isCompleted ? 'Completed' : 'Mark complete'}
@@ -120,33 +120,33 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
 
         {/* Title */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">Title</label>
+          <label className="block text-xs font-medium text-black mb-1">Title</label>
           <input
             type="text"
             value={title}
             onChange={e => { setTitle(e.target.value); markDirty(); }}
-            className="w-full text-sm text-gray-900 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+            className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
           />
         </div>
 
         {/* Course */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">Course</label>
+          <label className="block text-xs font-medium text-black mb-1">Course</label>
           <input
             type="text"
             value={course}
             onChange={e => { setCourse(e.target.value); markDirty(); }}
-            className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+            className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
           />
         </div>
 
         {/* Platform */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">Platform</label>
+          <label className="block text-xs font-medium text-black mb-1">Platform</label>
           <select
             value={platform}
             onChange={e => { setPlatform(e.target.value); markDirty(); }}
-            className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary bg-white"
+            className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary bg-white"
           >
             {PLATFORMS.map(p => (
               <option key={p} value={p}>{p}</option>
@@ -157,34 +157,34 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
         {/* Due date & time */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">Due date</label>
+            <label className="block text-xs font-medium text-black mb-1">Due date</label>
             <input
               type="date"
               value={dueDate}
               onChange={e => { setDueDate(e.target.value); markDirty(); }}
-              className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+              className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">Due time</label>
+            <label className="block text-xs font-medium text-black mb-1">Due time</label>
             <input
               type="time"
               value={dueTime}
               onChange={e => { setDueTime(e.target.value); markDirty(); }}
-              className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary"
+              className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
             />
           </div>
         </div>
 
         {/* Notes */}
         <div>
-          <label className="block text-xs font-medium text-gray-500 mb-1">Notes</label>
+          <label className="block text-xs font-medium text-black mb-1">Notes</label>
           <textarea
             value={notes}
             onChange={e => { setNotes(e.target.value); markDirty(); }}
             placeholder="Add notes..."
             rows={5}
-            className="w-full text-sm text-gray-700 border border-gray-200 rounded-md px-3 py-2 focus:outline-none focus:border-primary resize-none"
+            className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary resize-none"
           />
         </div>
 
@@ -216,7 +216,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
         {/* Link */}
         {assignment.link && (
           <div>
-            <label className="block text-xs font-medium text-gray-500 mb-1">Link</label>
+            <label className="block text-xs font-medium text-black mb-1">Link</label>
             <a
               href={assignment.link}
               target="_blank"
@@ -231,7 +231,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
 
       {/* Save button */}
       {dirty && (
-        <div className="px-4 py-3 border-t border-gray-100">
+        <div className="px-4 py-3 border-t border-black">
           <button
             onClick={handleSave}
             className="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-hover transition-colors"

@@ -17,12 +17,12 @@ export function SettingsView() {
 
   return (
     <div className="max-w-lg">
-      <h2 className="text-lg font-semibold text-gray-900 mb-6">Settings</h2>
+      <h2 className="text-lg font-semibold text-black mb-6">Settings</h2>
 
       <div className="space-y-6">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="bg-white rounded-lg border border-black p-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-medium text-gray-700">Accounts</h3>
+            <h3 className="text-sm font-medium text-black">Accounts</h3>
             <button
               onClick={addAccount}
               disabled={loading}
@@ -33,7 +33,7 @@ export function SettingsView() {
           </div>
 
           {accounts.length === 0 ? (
-            <p className="text-sm text-gray-400">No accounts connected.</p>
+            <p className="text-sm text-black">No accounts connected.</p>
           ) : (
             <div className="space-y-3">
               {accounts.map((account) => (
@@ -46,8 +46,8 @@ export function SettingsView() {
                       {account.email[0]?.toUpperCase() || '?'}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{account.display_name}</p>
-                      <p className="text-xs text-gray-500 truncate">{account.email}</p>
+                      <p className="text-sm font-medium text-black truncate">{account.display_name}</p>
+                      <p className="text-xs text-black truncate">{account.email}</p>
                     </div>
                   </div>
 
@@ -67,7 +67,7 @@ export function SettingsView() {
                     </button>
                     <button
                       onClick={() => handleRemove(account.email)}
-                      className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                      className="p-1 text-black hover:text-red-500 transition-colors"
                       title="Remove account"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -12,11 +12,11 @@ export function NeedsReviewSection({ assignments }: NeedsReviewSectionProps) {
     <div className="mt-8">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-2 h-2 rounded-full bg-yellow-400" />
-        <h3 className="text-sm font-semibold text-gray-700">
+        <h3 className="text-sm font-semibold text-black">
           Needs Review ({assignments.length})
         </h3>
       </div>
-      <p className="text-xs text-gray-400 mb-3">
+      <p className="text-xs text-black mb-3">
         These assignments couldn't be fully parsed. Please verify the details.
       </p>
       <div className="space-y-2">
