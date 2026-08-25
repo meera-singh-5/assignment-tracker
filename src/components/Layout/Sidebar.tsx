@@ -11,7 +11,7 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-surface flex flex-col h-full">
       <div className="h-20 px-4 flex items-center border-b border-black shrink-0" style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}>
-        <h1 className="text-3xl font-normal text-black whitespace-nowrap">Assignment Tracker</h1>
+        <h1 className="text-2xl font-normal text-black whitespace-nowrap">Assignment Tracker</h1>
       </div>
 
       <div className="flex-1 flex flex-col bg-surface-dark border-r border-black">
