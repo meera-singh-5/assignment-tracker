@@ -10,9 +10,9 @@ A desktop application that scans your Gmail for assignment notifications from ed
 - **Assignment Management**: Manually add, complete, and edit assignments from multiple courses
 - **Status Tracking**: Monitor active and completed assignments with clear visual indicators
 
-<img width="1197" height="1008" alt="image" src="https://github.com/user-attachments/assets/b4b68b5f-7474-4a86-9e99-8d10e98242c8" />
+![alt text](image.png)"
 
-<img width="1202" height="1008" alt="image" src="https://github.com/user-attachments/assets/89cc77d8-b060-4998-8818-2ca4d0d9498e" />
+![alt text](image-1.png)"
 
 ### To-Do Dashboard
 View all active assignments with:
