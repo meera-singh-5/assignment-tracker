@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useAuthStore } from '../../stores/authStore';
 import { useAssignmentStore } from '../../stores/assignmentStore';
+import { OtherServicesTab } from './OtherServicesTab';
 
 export function SettingsView() {
   const { accounts, addAccount, removeAccount, toggleAccount, signingIn } = useAuthStore();
   const { fetchAssignments } = useAssignmentStore();
   const [expandedEmail, setExpandedEmail] = useState<string | null>(null);
+  const [tab, setTab] = useState<'accounts' | 'other'>('accounts');
 
   const handleRemove = async (email: string) => {
     setExpandedEmail(null);
@@ -22,7 +24,13 @@ export function SettingsView() {
     <div className="max-w-lg">
       <h2 className="text-lg font-semibold text-black mb-6">Settings</h2>
 
-      <div className="space-y-6">
+      {/* Sub-tabs */}
+      <div className="flex items-center gap-1 mb-6 border-b border-black">
+        <TabButton label="Accounts" active={tab === 'accounts'} onClick={() => setTab('accounts')} />
+        <TabButton label="Other Services" active={tab === 'other'} onClick={() => setTab('other')} />
+      </div>
+
+      {tab === 'accounts' ? (
         <div className="bg-white rounded-lg border border-black p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-black">Accounts</h3>
@@ -91,7 +99,24 @@ export function SettingsView() {
             </div>
           )}
         </div>
-      </div>
+      ) : (
+        <OtherServicesTab />
+      )}
     </div>
+  );
+}
+
+function TabButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+        active
+          ? 'border-primary text-primary'
+          : 'border-transparent text-black hover:text-black'
+      }`}
+    >
+      {label}
+    </button>
   );
 }

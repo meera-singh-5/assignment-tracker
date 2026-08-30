@@ -17,6 +17,11 @@ contextBridge.exposeInMainWorld('api', {
     scan: () => ipcRenderer.invoke('tasks:scan'),
     refresh: () => ipcRenderer.invoke('tasks:refresh'),
   },
+  gradescope: {
+    login: (email: string, password: string) =>
+      ipcRenderer.invoke('gradescope:login', email, password),
+    logout: () => ipcRenderer.invoke('gradescope:logout'),
+  },
   db: {
     getAssignments: () => ipcRenderer.invoke('db:getAssignments'),
     upsertAssignment: (assignment: Record<string, unknown>) =>

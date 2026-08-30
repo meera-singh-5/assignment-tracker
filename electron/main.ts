@@ -7,6 +7,9 @@ import { initDatabase, getAssignments, upsertAssignment, updateAssignment, delet
 import { login, logout, getAuthStatus, migrateFromSingleAccount, toggleAccount, cancelLogin } from './services/auth';
 import { scanEmails, refreshEmails, startAutoRefresh, stopAutoRefresh } from './services/gmail';
 import { scanTasks, refreshTasks } from './services/tasks';
+import { createSession as createGradescopeSession } from './services/gradescope/client';
+import { login as gradescopeLogin, logout as gradescopeLogout } from './services/gradescope/auth';
+import { setCurrentSession as setGradescopeSession, getCurrentSession as getGradescopeSession, clearCurrentSession as clearGradescopeSession } from './services/gradescope/session';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -94,6 +97,27 @@ function registerIpcHandlers(): void {
 
   ipcMain.handle('tasks:refresh', async () => {
     return refreshTasks();
+  });
+
+  // Gradescope — session lives in memory only, not persisted across app restarts
+  ipcMain.handle('gradescope:login', async (_event, email: string, password: string) => {
+    try {
+      const session = createGradescopeSession();
+      await gradescopeLogin(session, email, password);
+      setGradescopeSession(session, email);
+      return { success: true, email };
+    } catch (err) {
+      console.error('gradescope:login failed:', err);
+      throw err;
+    }
+  });
+
+  ipcMain.handle('gradescope:logout', async () => {
+    const current = getGradescopeSession();
+    if (current) {
+      await gradescopeLogout(current.session);
+      clearGradescopeSession();
+    }
   });
 
   // Database

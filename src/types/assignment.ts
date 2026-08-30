@@ -86,6 +86,10 @@ export interface IpcApi {
     scan: () => Promise<Assignment[]>;
     refresh: () => Promise<Assignment[]>;
   };
+  gradescope: {
+    login: (email: string, password: string) => Promise<{ success: true; email: string }>;
+    logout: () => Promise<void>;
+  };
   db: {
     getAssignments: () => Promise<Assignment[]>;
     upsertAssignment: (assignment: Partial<Assignment>) => Promise<Assignment>;
