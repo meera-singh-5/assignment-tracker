@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useGradescopeStore } from '../../stores/gradescopeStore';
+import { SignOutConfirm } from './SignOutConfirm';
 
 export function GradescopeCard() {
   const { email: loggedInEmail, loggedIn, loading, error, login, logout } = useGradescopeStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmingSignOut, setConfirmingSignOut] = useState(false);
 
   if (loggedIn) {
     return (
@@ -21,13 +23,22 @@ export function GradescopeCard() {
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-black flex justify-end">
-            <button
-              onClick={() => logout()}
-              className="px-3 py-1.5 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
-            >
-              Sign out
-            </button>
+          <div className="mt-3 pt-3 border-t border-black">
+            {confirmingSignOut ? (
+              <SignOutConfirm
+                onConfirm={() => { logout(); setConfirmingSignOut(false); }}
+                onCancel={() => setConfirmingSignOut(false)}
+              />
+            ) : (
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setConfirmingSignOut(true)}
+                  className="px-3 py-1.5 text-xs font-medium text-red-600 border border-red-200 rounded-md hover:bg-red-50 transition-colors"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
