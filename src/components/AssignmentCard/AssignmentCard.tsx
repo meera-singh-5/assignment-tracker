@@ -81,13 +81,27 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
   const colorClass = platformColors[assignment.platform] || platformColors.Unknown;
   const due = formatDueInfo();
 
+  const hasColor = Boolean(assignment.course_color);
+  const textColorClass = hasColor ? 'text-white' : 'text-black';
+
+  const statusBorderClass = selected
+    ? 'ring-2 ring-primary border-primary/30'
+    : overdue
+      ? 'border-red-300'
+      : isWithin24h
+        ? 'border-amber-300'
+        : '';
+
   return (
     <div
       onClick={onSelect}
-      className={`bg-white rounded-lg border p-4 transition-all hover:shadow-md cursor-pointer ${
-        selected ? 'ring-2 ring-primary border-primary/30' :
-        isCompleted ? 'opacity-60 border-black' : overdue ? 'border-red-300' : isWithin24h ? 'border-amber-300' : 'border-black'
-      }`}
+      style={hasColor ? {
+        backgroundColor: assignment.course_color,
+        ...(statusBorderClass ? {} : { borderColor: assignment.course_color }),
+      } : undefined}
+      className={`bg-white rounded-lg border-2 p-4 transition-all hover:shadow-md cursor-pointer ${
+        isCompleted ? 'opacity-60' : ''
+      } ${statusBorderClass}`}
     >
       <div className="flex items-start gap-3">
         <button
@@ -95,7 +109,9 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
           className={`mt-1 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
             isCompleted
               ? 'bg-green-500 border-green-500 text-white'
-              : 'border-black hover:border-primary'
+              : hasColor
+                ? 'border-white hover:border-white/70'
+                : 'border-black hover:border-primary'
           }`}
         >
           {isCompleted && (
@@ -109,7 +125,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               {assignment.course && (
-                <span className="text-xs font-medium text-black">{assignment.course}</span>
+                <span className={`text-xs font-medium ${textColorClass}`}>{assignment.course}</span>
               )}
               <span className={`px-1.5 py-0.5 text-xs font-medium rounded ${colorClass}`}>
                 {assignment.platform}
@@ -123,18 +139,18 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
 
             <div className="text-right shrink-0 ml-3">
               <div className={`text-xs font-medium ${
-                isWithin24h ? 'text-amber-600' : overdue ? 'text-red-500' : 'text-black'
+                hasColor ? 'text-white' : isWithin24h ? 'text-amber-600' : overdue ? 'text-red-500' : 'text-black'
               }`}>
                 {due.date}
               </div>
               {due.time && (
-                <div className={`text-xs ${overdue ? 'text-red-400' : 'text-black'}`}>
+                <div className={`text-xs ${hasColor ? 'text-white' : overdue ? 'text-red-400' : 'text-black'}`}>
                   {due.time}
                 </div>
               )}
               {due.label && (
                 <div className={`text-xs font-medium mt-0.5 ${
-                  overdue ? 'text-red-500' : isWithin24h ? 'text-amber-600' : 'text-amber-500'
+                  hasColor ? 'text-white' : overdue ? 'text-red-500' : isWithin24h ? 'text-amber-600' : 'text-amber-500'
                 }`}>
                   {due.label}
                 </div>
@@ -142,7 +158,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
             </div>
           </div>
 
-          <h3 className={`font-medium text-sm ${isCompleted ? 'line-through text-black' : 'text-black'}`}>
+          <h3 className={`font-medium text-sm ${isCompleted ? 'line-through ' : ''}${textColorClass}`}>
             {assignment.title}
           </h3>
         </div>
@@ -153,7 +169,7 @@ export function AssignmentCard({ assignment, selected, onSelect }: AssignmentCar
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
-            className="text-black hover:text-primary shrink-0 mt-1"
+            className={`shrink-0 mt-1 ${hasColor ? 'text-white hover:text-white/70' : 'text-black hover:text-primary'}`}
             title="Open in browser"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

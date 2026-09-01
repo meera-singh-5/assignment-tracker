@@ -19,7 +19,7 @@ export function initDatabase(): void {
       title TEXT NOT NULL,
       due_date TEXT,
       status TEXT NOT NULL DEFAULT 'pending',
-      course_color TEXT NOT NULL DEFAULT '#4F46E5',
+      course_color TEXT NOT NULL DEFAULT '',
       priority_icon TEXT NOT NULL DEFAULT '',
       notes TEXT NOT NULL DEFAULT '',
       subtasks TEXT NOT NULL DEFAULT '[]',
@@ -85,6 +85,10 @@ export function initDatabase(): void {
   if (!assignmentCols.some(c => c.name === 'deleted')) {
     db.exec("ALTER TABLE assignments ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0");
   }
+
+  // Migration: the old hardcoded default course_color (#4F46E5) predates the
+  // color picker and was never an actual user choice — treat it as unset.
+  db.exec("UPDATE assignments SET course_color = '' WHERE course_color = '#4F46E5'");
 }
 
 function generateId(): string {
@@ -178,7 +182,7 @@ export function upsertAssignment(data: Record<string, unknown>): Record<string, 
       data.title || 'Untitled',
       data.due_date || null,
       data.status || 'pending',
-      data.course_color || '#4F46E5',
+      data.course_color || '',
       data.priority_icon || '',
       data.notes || '',
       JSON.stringify(data.subtasks || []),

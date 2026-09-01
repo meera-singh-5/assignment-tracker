@@ -1,17 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useAssignmentStore } from '../../stores/assignmentStore';
 import type { Assignment } from '../../types/assignment';
-
-const platformColors: Record<string, string> = {
-  Gradescope: 'bg-teal-500',
-  Brightspace: 'bg-orange-500',
-  Canvas: 'bg-red-500',
-  Blackboard: 'bg-gray-700',
-  WebAssign: 'bg-blue-500',
-  Pearson: 'bg-indigo-500',
-  'Google Classroom': 'bg-green-500',
-  Unknown: 'bg-gray-400',
-};
+import { AssignmentDetailPanel } from '../TodoList/AssignmentDetailPanel';
 
 const platformTextColors: Record<string, string> = {
   Gradescope: 'text-teal-700',
@@ -35,6 +25,9 @@ const platformBgColors: Record<string, string> = {
   Unknown: 'bg-gray-50',
 };
 
+// Neutral fallback for assignments with no chosen color, so previews stay visible
+const DEFAULT_COURSE_COLOR = '#000000';
+
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function getDaysInMonth(year: number, month: number): number {
@@ -49,6 +42,7 @@ export function CalendarView() {
   const { assignments } = useAssignmentStore();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | null>(null);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -95,6 +89,9 @@ export function CalendarView() {
   const monthLabel = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   const selectedAssignments = selectedDate ? (assignmentsByDate[selectedDate] || []) : [];
+  const selectedAssignmentDetail = selectedAssignmentId
+    ? assignments.find(a => a.id === selectedAssignmentId) ?? null
+    : null;
 
   return (
     <div className="flex flex-col h-full gap-4">
@@ -147,10 +144,11 @@ export function CalendarView() {
               }
 
               const dayAssignments = assignmentsByDate[cell.dateStr] || [];
+              const completedAssignments = dayAssignments.filter(a => a.status === 'completed');
+              const activeAssignments = dayAssignments.filter(a => a.status !== 'completed');
               const isToday = cell.dateStr === todayStr;
               const isSelected = cell.dateStr === selectedDate;
-              const hasAssignments = dayAssignments.length > 0;
-              const hasOverdue = dayAssignments.some(a => a.status !== 'completed' && new Date(a.due_date!).getTime() < Date.now());
+              const hasOverdue = activeAssignments.some(a => new Date(a.due_date!).getTime() < Date.now());
 
               return (
                 <button
@@ -160,34 +158,50 @@ export function CalendarView() {
                     isSelected ? 'ring-2 ring-primary ring-inset' : 'hover:bg-gray-50'
                   }`}
                 >
-                  <span className={`text-xs font-medium leading-none inline-flex items-center justify-center w-6 h-6 rounded-full ${
-                    isToday
-                      ? 'bg-primary text-white'
-                      : isSelected
-                        ? 'text-primary'
-                        : 'text-black'
-                  }`}>
-                    {cell.day}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    <span className={`text-xs font-medium leading-none inline-flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
+                      isToday
+                        ? 'bg-primary text-white'
+                        : isSelected
+                          ? 'text-primary'
+                          : 'text-black'
+                    }`}>
+                      {cell.day}
+                    </span>
 
-                  {/* Assignment dots */}
-                  {hasAssignments && (
-                    <div className="flex flex-wrap gap-0.5 mt-1">
-                      {dayAssignments.slice(0, 3).map(a => (
-                        <span
-                          key={a.id}
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            a.status === 'completed'
-                              ? 'bg-green-400'
-                              : hasOverdue
-                                ? 'bg-red-400'
-                                : platformColors[a.platform] || platformColors.Unknown
-                          }`}
-                          title={a.title}
-                        />
-                      ))}
-                      {dayAssignments.length > 3 && (
-                        <span className="text-[9px] text-black leading-none">+{dayAssignments.length - 3}</span>
+                    {/* Completed assignments collapse to a dot in their chosen color */}
+                    {completedAssignments.length > 0 && (
+                      <div className="flex items-center gap-0.5 flex-wrap">
+                        {completedAssignments.map(a => (
+                          <span
+                            key={a.id}
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: a.course_color || DEFAULT_COURSE_COLOR }}
+                            title={a.title}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Active assignment previews */}
+                  {activeAssignments.length > 0 && (
+                    <div className="space-y-0.5 mt-1 min-w-0">
+                      {activeAssignments.slice(0, 3).map(a => {
+                        const statusClass = hasOverdue ? 'bg-red-400' : '';
+                        return (
+                          <div
+                            key={a.id}
+                            className={`px-1 py-0.5 rounded text-[9px] leading-tight text-white truncate ${statusClass}`}
+                            style={statusClass ? undefined : { backgroundColor: a.course_color || DEFAULT_COURSE_COLOR }}
+                            title={a.title}
+                          >
+                            {a.title}
+                          </div>
+                        );
+                      })}
+                      {activeAssignments.length > 3 && (
+                        <span className="text-[9px] text-black leading-none">+{activeAssignments.length - 3}</span>
                       )}
                     </div>
                   )}
@@ -223,26 +237,39 @@ export function CalendarView() {
               ) : (
                 <div className="space-y-2">
                   {selectedAssignments.map(a => (
-                    <AssignmentPill key={a.id} assignment={a} />
+                    <AssignmentPill
+                      key={a.id}
+                      assignment={a}
+                      onSelect={() => setSelectedAssignmentId(a.id)}
+                    />
                   ))}
                 </div>
               )}
             </div>
           </div>
         )}
+
+        {/* Assignment detail panel */}
+        {selectedAssignmentDetail && (
+          <AssignmentDetailPanel
+            assignment={selectedAssignmentDetail}
+            onClose={() => setSelectedAssignmentId(null)}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function AssignmentPill({ assignment }: { assignment: Assignment }) {
+function AssignmentPill({ assignment, onSelect }: { assignment: Assignment; onSelect: () => void }) {
   const { updateAssignment } = useAssignmentStore();
   const isCompleted = assignment.status === 'completed';
   const isOverdue = assignment.due_date && new Date(assignment.due_date).getTime() < Date.now() && !isCompleted;
   const textColor = platformTextColors[assignment.platform] || platformTextColors.Unknown;
   const bgColor = platformBgColors[assignment.platform] || platformBgColors.Unknown;
 
-  const toggleComplete = () => {
+  const toggleComplete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     updateAssignment(assignment.id, {
       status: isCompleted ? 'pending' : 'completed',
     });
@@ -253,7 +280,10 @@ function AssignmentPill({ assignment }: { assignment: Assignment }) {
     : '';
 
   return (
-    <div className={`rounded-lg p-3 ${bgColor} ${isCompleted ? 'opacity-60' : ''}`}>
+    <div
+      onClick={onSelect}
+      className={`rounded-lg p-3 cursor-pointer transition-opacity ${bgColor} ${isCompleted ? 'opacity-60' : 'hover:opacity-80'}`}
+    >
       <div className="flex items-start gap-2">
         <button
           onClick={toggleComplete}

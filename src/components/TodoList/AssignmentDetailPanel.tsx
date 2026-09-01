@@ -4,6 +4,14 @@ import { useAssignmentStore } from '../../stores/assignmentStore';
 
 const PLATFORMS = ['WebAssign', 'Brightspace', 'Gradescope', 'Canvas', 'Blackboard', 'Pearson', 'Google Classroom', 'Other'];
 
+const COURSE_COLORS = [
+  { name: 'Violet', value: '#7C3AED' },
+  { name: 'Fuchsia', value: '#C026D3' },
+  { name: 'Sky', value: '#0284C7' },
+  { name: 'Slate', value: '#475569' },
+  { name: 'Stone', value: '#57534E' },
+];
+
 interface Props {
   assignment: Assignment;
   onClose: () => void;
@@ -15,6 +23,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
   const [title, setTitle] = useState(assignment.title);
   const [course, setCourse] = useState(assignment.course);
   const [platform, setPlatform] = useState(assignment.platform);
+  const [courseColor, setCourseColor] = useState(assignment.course_color);
   const [dueDate, setDueDate] = useState('');
   const [dueTime, setDueTime] = useState('');
   const [notes, setNotes] = useState(assignment.notes);
@@ -25,6 +34,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
     setTitle(assignment.title);
     setCourse(assignment.course);
     setPlatform(assignment.platform);
+    setCourseColor(assignment.course_color);
     setNotes(assignment.notes);
     setDirty(false);
 
@@ -56,6 +66,7 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
       title: title.trim() || assignment.title,
       course: course.trim(),
       platform,
+      course_color: courseColor,
       due_date,
       notes: notes.trim(),
       needs_review: false,
@@ -152,6 +163,25 @@ export function AssignmentDetailPanel({ assignment, onClose }: Props) {
               <option key={p} value={p}>{p}</option>
             ))}
           </select>
+        </div>
+
+        {/* Color */}
+        <div>
+          <label className="block text-xs font-medium text-black mb-1">Color</label>
+          <div className="flex gap-2">
+            {COURSE_COLORS.map(c => (
+              <button
+                key={c.value}
+                type="button"
+                onClick={() => { setCourseColor(c.value); markDirty(); }}
+                title={c.name}
+                className={`w-7 h-7 rounded-full transition-transform ${
+                  courseColor === c.value ? 'ring-2 ring-offset-2 ring-black scale-105' : ''
+                }`}
+                style={{ backgroundColor: c.value }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Due date & time */}

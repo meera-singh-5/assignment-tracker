@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGradescopeStore } from '../../stores/gradescopeStore';
 import { SignOutConfirm } from './SignOutConfirm';
+import { PasswordInput } from './PasswordInput';
 
 export function GradescopeCard() {
   const { email: loggedInEmail, loggedIn, loading, error, login, logout } = useGradescopeStore();
@@ -57,13 +58,7 @@ export function GradescopeCard() {
           placeholder="Email"
           className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
         />
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
-          className="w-full text-sm text-black border border-black rounded-md px-3 py-2 focus:outline-none focus:border-primary"
-        />
+        <PasswordInput value={password} onChange={setPassword} placeholder="Password" />
         <button
           onClick={() => login(email, password)}
           disabled={loading || !email || !password}
